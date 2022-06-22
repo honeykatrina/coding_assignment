@@ -19,5 +19,11 @@ namespace UserAccountManagement.Controllers
         {
             return _userService.GetUsers();
         }
+
+        [HttpPost]
+        public IActionResult CreateAccount([FromBody]Guid customerId, double initialCredit)
+        {
+            return Ok();
+        }
     }
 }
