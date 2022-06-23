@@ -8,5 +8,7 @@ public class UserResponseModel
 
     public double Balance { get; set; }
 
-    //public Dictionary<string, double> TransactionsHistory { get; set; }
+    public Guid AccountId { get; set; }
+
+    public int CustomerId { get; set; }
 }
