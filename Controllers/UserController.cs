@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using UserAccountManagement.Models;
+using UserAccountManagement.Models.Requests;
 using UserAccountManagement.Services;
 
 namespace UserAccountManagement.Controllers
@@ -9,32 +9,23 @@ namespace UserAccountManagement.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IAccountService _accountService;
-        public UserController(
-            IUserService userService,
-            IAccountService accountService)
+
+        public UserController(IUserService userService)
         {
             _userService = userService;
-            _accountService = accountService;
         }
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public IActionResult Get()
         {
-            return _userService.GetUsers();
+            return Ok(_userService.GetUsers());
         }
 
         [HttpPost]
-        public IActionResult CreateAccount([FromBody] CreateAccountRequest request)
+        public IActionResult Create([FromBody] CreateUserRequest request)
         {
-            _accountService.CreateAccount(request.CustomerId, request.InitialCredit);
+            _userService.CreateUser(request);
             return Ok();
         }
-    }
-
-    public class CreateAccountRequest 
-    {
-        public Guid CustomerId { get; set; }
-        public double InitialCredit { get; set; }
     }
 }

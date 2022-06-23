@@ -1,18 +1,12 @@
 [
     {
-        "Accounts": [
-            {
-                "Id": "1B61A218-84F3-411A-8238-E9C3196FD387",
-                "CustomerId": "614F8324-DF21-4041-BE53-2EF842D11969",
-                "Transaction": {
-                    "Id": "842615D0-F97B-4691-96C5-EFA9E33A6811",
-                    "Credit": 200
-                }
-            }
-        ],
-        "Balance": 2220.36,
-        "Id": "614F8324-DF21-4041-BE53-2EF842D11969",
+        "Id": "614f8324-df21-4041-be53-2ef842d11969",
         "Name": "Kate",
-        "Surname": "Morozova"
+        "Surname": "Morozova",
+        "Account": {
+            "Id": "1b61a218-84f3-411a-8238-e9c3196fd387",
+            "CustomerId": 1,
+            "Balance": 300
+        }
     }
 ]
