@@ -6,17 +6,7 @@
                 "CustomerId": "614F8324-DF21-4041-BE53-2EF842D11969",
                 "Transaction": {
                     "Id": "842615D0-F97B-4691-96C5-EFA9E33A6811",
-                    "Credit": 200,
-                    "Name": "Transaction 1"
-                }
-            },
-            {
-                "Id": "1B61A218-84F3-411A-8238-E9C3196FD387",
-                "CustomerId": "614F8324-DF21-4041-BE53-2EF842D11969",
-                "Transaction": {
-                    "Id": "842615D0-F97B-4691-96C5-EFA9E33A6811",
-                    "Credit": 200,
-                    "Name": "Transaction 1"
+                    "Credit": 200
                 }
             }
         ],

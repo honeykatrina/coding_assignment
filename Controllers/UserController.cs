@@ -9,9 +9,13 @@ namespace UserAccountManagement.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IAccountService _accountService;
+        public UserController(
+            IUserService userService,
+            IAccountService accountService)
         {
-           _userService = userService;
+            _userService = userService;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -19,5 +23,18 @@ namespace UserAccountManagement.Controllers
         {
             return _userService.GetUsers();
         }
+
+        [HttpPost]
+        public IActionResult CreateAccount([FromBody] CreateAccountRequest request)
+        {
+            _accountService.CreateAccount(request.CustomerId, request.InitialCredit);
+            return Ok();
+        }
+    }
+
+    public class CreateAccountRequest 
+    {
+        public Guid CustomerId { get; set; }
+        public double InitialCredit { get; set; }
     }
 }

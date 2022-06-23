@@ -10,5 +10,5 @@ public class User
 
     public double Balance { get; set; }
 
-    public Account[] Accounts { get; set; }
+    public List<Account> Accounts { get; set; }
 }

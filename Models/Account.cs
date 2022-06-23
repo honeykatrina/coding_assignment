@@ -6,5 +6,5 @@ public class Account
 
     public Guid CustomerId { get; set; }
 
-    public Transaction Transaction { get; set; }
+    public Transaction? Transaction { get; set; }
 }
