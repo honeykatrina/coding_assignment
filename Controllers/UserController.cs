@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using UserAccountManagement.Helpers;
 using UserAccountManagement.Models.Requests;
 using UserAccountManagement.Services;
 
@@ -18,14 +19,15 @@ namespace UserAccountManagement.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_userService.GetUsers());
+            var result = _userService.GetUsers();
+            return result.Success ? new OkObjectResult(result) : ErrorResponseHelper.CreateErrorResponse(result);
         }
 
         [HttpPost]
         public IActionResult Create([FromBody] CreateUserRequest request)
         {
-            _userService.CreateUser(request);
-            return Ok();
+            var result = _userService.CreateUser(request);
+            return result.Success ? new OkObjectResult(result) : ErrorResponseHelper.CreateErrorResponse(result);
         }
     }
 }

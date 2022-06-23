@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
-using UserAccountManagement.Models.DomainModels;
+using System.Net;
+using UserAccountManagement.Helpers;
+using UserAccountManagement.Models.Entities;
 using UserAccountManagement.Models.Requests;
-using UserAccountManagement.Models.ResponseModels;
+using UserAccountManagement.Models.Responses;
 using UserAccountManagement.Repositories;
 
 namespace UserAccountManagement.Services;
@@ -22,27 +24,35 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
-    public List<UserResponseModel> GetUsers()
+    public BaseResponse<List<UserResponseModel>> GetUsers()
     {
         var users = _userRepository.GetAll();
-        return _mapper.Map<List<UserResponseModel>>(users);
+        return new BaseResponseBuilder<List<UserResponseModel>>()
+            .BuildSuccessResponse(_mapper.Map<List<UserResponseModel>>(users));
     }
 
-    public void CreateUser(CreateUserRequest request)
+    public BaseResponse<UserResponseModel> CreateUser(CreateUserRequest request)
     {
         var currentUser = _userRepository.GetByCustomerId(request.CustomerId);
         if (currentUser != null)
         {
-            throw new Exception();
+            return new BaseResponseBuilder<UserResponseModel>()
+                .SetError(new()
+                    { ErrorCode = HttpStatusCode.BadRequest, Message = "User account already exists." })
+                .Build();
         }
 
         var newUser = _mapper.Map<User>(request);
         _userRepository.Create(newUser);
+        var createdUser = _userRepository.GetById(newUser.Id);
         
         if (request.InitialCredit != 0)
         {
             var transaction = _mapper.Map<Transaction>((request, newUser.Account.Id));
             _transactionRepository.Create(transaction);
         }
+
+        return new BaseResponseBuilder<UserResponseModel>()
+            .BuildSuccessResponse(_mapper.Map<UserResponseModel>(createdUser));
     }
 }

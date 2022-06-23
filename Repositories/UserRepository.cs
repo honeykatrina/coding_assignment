@@ -1,16 +1,7 @@
 ﻿using System.Text.Json;
-using UserAccountManagement.Models.DomainModels;
+using UserAccountManagement.Models.Entities;
 
 namespace UserAccountManagement.Repositories;
-
-public interface IUserRepository
-{
-    List<User> GetAll();
-
-    void Create(User user);
-
-    User GetByCustomerId(int customerId);
-}
 
 public class UserRepository : IUserRepository
 {
@@ -19,6 +10,13 @@ public class UserRepository : IUserRepository
         var jsonString = File.ReadAllText("Users.json");
         var users = JsonSerializer.Deserialize<List<User>>(jsonString);
         return users.FirstOrDefault(x => x.Account.CustomerId == customerId);
+    }
+
+    public User GetById(Guid id)
+    {
+        var jsonString = File.ReadAllText("Users.json");
+        var users = JsonSerializer.Deserialize<List<User>>(jsonString);
+        return users.FirstOrDefault(x => x.Id == id);
     }
 
     public List<User> GetAll()

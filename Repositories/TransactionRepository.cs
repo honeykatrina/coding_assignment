@@ -1,14 +1,7 @@
 ﻿using System.Text.Json;
-using UserAccountManagement.Models.DomainModels;
+using UserAccountManagement.Models.Entities;
 
 namespace UserAccountManagement.Repositories;
-
-public interface ITransactionRepository
-{
-    void Create(Transaction transaction);
-
-    List<Transaction> GetByAccountId(Guid accountId);
-}
 
 public class TransactionRepository : ITransactionRepository
 {
