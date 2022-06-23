@@ -4,12 +4,7 @@ using UserAccountManagement.Repositories;
 
 namespace UserAccountManagement.Services;
 
-public interface ITransactionService
-{
-    List<TransactionResponseModel> GetTransactionsByAccountId(Guid accountId);
-}
-
-public class TransactionService:ITransactionService
+public class TransactionService : ITransactionService
 {
     private readonly ITransactionRepository _transactionRepository;
     private readonly IMapper _mapper;

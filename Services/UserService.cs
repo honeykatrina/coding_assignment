@@ -33,18 +33,16 @@ public class UserService : IUserService
         var currentUser = _userRepository.GetByCustomerId(request.CustomerId);
         if (currentUser != null)
         {
-            // already exists error
+            throw new Exception();
         }
+
         var newUser = _mapper.Map<User>(request);
         _userRepository.Create(newUser);
-
         
         if (request.InitialCredit != 0)
         {
             var transaction = _mapper.Map<Transaction>((request, newUser.Account.Id));
             _transactionRepository.Create(transaction);
-
         }
     }
 }
-

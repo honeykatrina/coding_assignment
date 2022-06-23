@@ -10,7 +10,3 @@ public class User
 
     public Account Account { get; set; }
 }
-
-// создается юзер
-// с аккаунтом
-// если не 0 , то еще и первая транзакция
