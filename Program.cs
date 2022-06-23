@@ -1,6 +1,9 @@
-using UserAccountManagement.Mappings;
-using UserAccountManagement.Repositories;
-using UserAccountManagement.Services;
+using UserAccountManagement.TransactionModule.Mappings;
+using UserAccountManagement.TransactionModule.Repositories;
+using UserAccountManagement.TransactionModule.Services;
+using UserAccountManagement.UserModule.Mappings;
+using UserAccountManagement.UserModule.Repositories;
+using UserAccountManagement.UserModule.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
