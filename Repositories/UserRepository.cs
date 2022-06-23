@@ -1,29 +1,37 @@
 ﻿using System.Text.Json;
-using UserAccountManagement.Models;
+using UserAccountManagement.Models.DomainModels;
 
 namespace UserAccountManagement.Repositories;
 
 public interface IUserRepository
 {
-    List<User> GetUsers();
-    void UpdateUser(User user);
+    List<User> GetAll();
+
+    void Create(User user);
+
+    User GetByCustomerId(int customerId);
 }
 
 public class UserRepository : IUserRepository
 {
-    public List<User> GetUsers()
+    public User GetByCustomerId(int customerId)
+    {
+        var jsonString = File.ReadAllText("Users.json");
+        var users = JsonSerializer.Deserialize<List<User>>(jsonString);
+        return users.FirstOrDefault(x => x.Account.CustomerId == customerId);
+    }
+
+    public List<User> GetAll()
     {
         var jsonString = File.ReadAllText("Users.json");
         var users = JsonSerializer.Deserialize<List<User>>(jsonString);
         return users;
     }
 
-    public void UpdateUser(User user)
+    public void Create(User user)
     {
         var jsonString = File.ReadAllText("Users.json");
         var users = JsonSerializer.Deserialize<List<User>>(jsonString);
-        var existingUser = users.SingleOrDefault(x => x.Id == user.Id);
-        users.Remove(existingUser);
         users.Add(user);
         using var file = File.CreateText("Users.json");
         file.WriteLine(JsonSerializer.Serialize(users));

@@ -1,12 +1,14 @@
+using UserAccountManagement.Mappings;
 using UserAccountManagement.Repositories;
 using UserAccountManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IUserService, UserService>();
-builder.Services.AddTransient<IAccountService, AccountService>();
-// Add services to the container.
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddAutoMapper(new[] { typeof(UserProfile), typeof(TransactionProfile) });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -15,7 +17,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

@@ -1,4 +1,4 @@
-﻿namespace UserAccountManagement.Models;
+﻿namespace UserAccountManagement.Models.DomainModels;
 
 public class User
 {
@@ -8,7 +8,5 @@ public class User
 
     public string Surname { get; set; }
 
-    public double Balance { get; set; }
-
-    public List<Account> Accounts { get; set; }
+    public Account Account { get; set; }
 }
