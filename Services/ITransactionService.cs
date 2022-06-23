@@ -1,8 +1,8 @@
-﻿using UserAccountManagement.Models.ResponseModels;
+﻿using UserAccountManagement.Models.Responses;
 
 namespace UserAccountManagement.Services;
 
 public interface ITransactionService
 {
-    List<TransactionResponseModel> GetTransactionsByAccountId(Guid accountId);
+    BaseResponse<List<TransactionResponseModel>> GetTransactionsByAccountId(Guid accountId);
 }

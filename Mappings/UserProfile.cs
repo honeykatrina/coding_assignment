@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using UserAccountManagement.Models.DomainModels;
+using UserAccountManagement.Models.Entities;
 using UserAccountManagement.Models.Requests;
-using UserAccountManagement.Models.ResponseModels;
+using UserAccountManagement.Models.Responses;
 
 namespace UserAccountManagement.Mappings;
 

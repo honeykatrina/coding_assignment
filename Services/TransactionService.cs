@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using UserAccountManagement.Models.ResponseModels;
+using UserAccountManagement.Helpers;
+using UserAccountManagement.Models.Responses;
 using UserAccountManagement.Repositories;
 
 namespace UserAccountManagement.Services;
@@ -17,9 +18,10 @@ public class TransactionService : ITransactionService
         _mapper = mapper;
     }
 
-    public List<TransactionResponseModel> GetTransactionsByAccountId(Guid accountId)
+    public BaseResponse<List<TransactionResponseModel>> GetTransactionsByAccountId(Guid accountId)
     {
         var transactions = _transactionRepository.GetByAccountId(accountId);
-        return _mapper.Map<List<TransactionResponseModel>>(transactions);
+        return new BaseResponseBuilder<List<TransactionResponseModel>>()
+            .BuildSuccessResponse(_mapper.Map<List<TransactionResponseModel>>(transactions));
     }
 }

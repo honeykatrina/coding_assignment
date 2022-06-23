@@ -1,4 +1,4 @@
-﻿namespace UserAccountManagement.Models.ResponseModels;
+﻿namespace UserAccountManagement.Models.Responses;
 
 public class UserResponseModel
 {

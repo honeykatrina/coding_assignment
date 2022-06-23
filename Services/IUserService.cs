@@ -1,11 +1,11 @@
 ﻿using UserAccountManagement.Models.Requests;
-using UserAccountManagement.Models.ResponseModels;
+using UserAccountManagement.Models.Responses;
 
 namespace UserAccountManagement.Services;
 
 public interface IUserService
 {
-    List<UserResponseModel> GetUsers();
+    BaseResponse<List<UserResponseModel>> GetUsers();
 
-    void CreateUser(CreateUserRequest request);
+    BaseResponse<UserResponseModel> CreateUser(CreateUserRequest request);
 }

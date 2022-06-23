@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UserAccountManagement.Helpers;
 using UserAccountManagement.Services;
 
 namespace UserAccountManagement.Controllers;
@@ -16,6 +17,7 @@ public class TransactionController : Controller
     [HttpGet("users/{accountId:guid}/transactions")]
     public IActionResult Get([FromRoute]Guid accountId)
     {
-        return Ok(_transactionService.GetTransactionsByAccountId(accountId));
+        var result = _transactionService.GetTransactionsByAccountId(accountId);
+        return result.Success ? new OkObjectResult(result) : ErrorResponseHelper.CreateErrorResponse(result);
     }
 }
