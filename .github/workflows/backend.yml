@@ -22,9 +22,12 @@ jobs:
        
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: src/backend
     
       - name: Build
         run: dotnet build -c Release --no-restore
+        working-directory: src/backend
     
       - name: Test
         run: dotnet test -c Release --no-restore --no-build
+        working-directory: src/backend
