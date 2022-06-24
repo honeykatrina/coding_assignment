@@ -1,0 +1,12 @@
+[
+    {
+        "Id": "614f8324-df21-4041-be53-2ef842d11969",
+        "Name": "Kate",
+        "Surname": "Morozova",
+        "Account": {
+            "Id": "1b61a218-84f3-411a-8238-e9c3196fd387",
+            "CustomerId": 1,
+            "Balance": 300
+        }
+    }
+]
