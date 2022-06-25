@@ -14,7 +14,7 @@ public class TransactionController : Controller
         _transactionService = transactionService;
     }
 
-    [HttpGet("users/{accountId:guid}/transactions")]
+    [HttpGet("user/{accountId:guid}/transactions")]
     public IActionResult Get([FromRoute]Guid accountId)
     {
         var result = _transactionService.GetTransactionsByAccountId(accountId);
