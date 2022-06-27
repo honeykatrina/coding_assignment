@@ -9,10 +9,20 @@ export class TransactionService {
 
   apiUrl = 'https://localhost:7018/user';
   headers = { 'Content-Type': 'application/json; charset=utf-8' };
+  transactions: Transaction[] = []
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.getTransactions()
+  }
 
-  getTransactionsByUserAccount(accountId: string) {
-    return this.http.get<Transaction[]>(this.apiUrl + accountId + "/transactions");
+  getTransactions() {
+    this.http.get<any>(this.apiUrl + "/transactions").subscribe({
+      next: (response) => {
+        this.transactions = response.model;
+      },
+      error: (e) => {
+        console.error('error: ', e);
+      }
+    });
   }
 }

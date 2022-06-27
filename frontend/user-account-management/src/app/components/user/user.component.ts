@@ -1,5 +1,5 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/interfaces/user';
 import { TransactionService } from 'src/app/services/transaction.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -16,6 +16,14 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getUsers()
+    this.transactionService.getTransactions();
+    this.userService.getUsers();
+  }
+
+  getTransactions(accountId: string) {
+    let transactions = this.transactionService.transactions.filter(x => x.accountId == accountId);
+    return transactions.map(
+      x => `${formatDate(x.creationDate, 'dd/MM/yyyy', 'en-US')}: ${x.amount}`
+    )
   }
 }

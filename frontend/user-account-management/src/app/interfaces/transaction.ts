@@ -1,4 +1,5 @@
 export interface Transaction {
     amount: number,
-    creationDate: Date
+    creationDate: Date,
+    accountId: string
 }

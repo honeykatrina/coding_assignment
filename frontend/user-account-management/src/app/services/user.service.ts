@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../interfaces/user';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CreateUserRequest } from '../interfaces/createUserRequest';
-import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +14,7 @@ export class UserService {
   users: User[] = [];
 
   constructor(private http: HttpClient) {
+    this.getUsers();
   }
 
   getUsers() {
