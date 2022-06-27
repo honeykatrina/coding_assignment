@@ -6,5 +6,5 @@ public interface ITransactionRepository
 {
     void Create(Transaction transaction);
 
-    List<Transaction> GetByAccountId(Guid accountId);
+    List<Transaction> GetAll();
 }

@@ -14,10 +14,10 @@ public class TransactionController : Controller
         _transactionService = transactionService;
     }
 
-    [HttpGet("user/{accountId:guid}/transactions")]
-    public IActionResult Get([FromRoute]Guid accountId)
+    [HttpGet("user/transactions")]
+    public IActionResult Get()
     {
-        var result = _transactionService.GetTransactionsByAccountId(accountId);
+        var result = _transactionService.GetTransactions();
         return result.Success ? new OkObjectResult(result) : ErrorResponseHelper.CreateErrorResponse(result);
     }
 }
