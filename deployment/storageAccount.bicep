@@ -76,4 +76,4 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-output staticWebsiteUrl string = storageAccount.properties.primaryEndpoints.web
+output storageAccountName string = storageAccountName

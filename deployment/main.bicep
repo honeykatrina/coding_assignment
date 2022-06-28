@@ -23,3 +23,6 @@ module appService './appService.bicep' = {
     location: location
   }
 }
+
+output appServiceName string = appService.outputs.appServiceName
+output storageAccountName string = storageAccount.outputs.storageAccountName
