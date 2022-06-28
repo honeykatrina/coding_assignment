@@ -103,7 +103,7 @@ jobs:
           uses: Azure/webapps-deploy@v2
           with:
             app-name: ${{ steps.deploy.outputs.appServiceName }}
-            package: ./back-appъ
+            package: ./back-app
         
         - name: Upload to blob storage
           uses: azure/CLI@v1
