@@ -45,8 +45,8 @@ jobs:
         - name: deploy
           uses: azure/arm-deploy@v1
           with:
+            scope: subscription
             subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-            resourceGroupName: ${{ secrets.AZURE_RG }}
             template: deployment/main.bicep
             parameters: resourceGroupName=${{ secrets.AZURE_RG }}
             failOnStdErr: false
