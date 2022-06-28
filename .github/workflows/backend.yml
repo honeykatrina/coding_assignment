@@ -31,3 +31,21 @@ jobs:
       - name: Test
         run: dotnet test -c Release --no-restore --no-build
         working-directory: backend
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+        - name: login
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+            
+        - name: deploy
+          uses: azure/arm-deploy@v1
+          with:
+            subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+            resourceGroupName: ${{ secrets.AZURE_RG }}
+            template: deployment/main.bicep
+            parameters: resourceGroupName=${{ secrets.AZURE_RG }}
+            failOnStdErr: false
+    
