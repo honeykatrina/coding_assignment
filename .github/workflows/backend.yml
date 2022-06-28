@@ -98,9 +98,11 @@ jobs:
             template: deployment/main.bicep
             parameters: resourceGroupName=${{ secrets.AZURE_RG }}
             failOnStdErr: false
-            
+        
         - name: deploy Azure WebApp
           uses: Azure/webapps-deploy@v2
           with:
-            app-name: ${{ steps.deploy.outputs.appServiceName }}
+            app-name: user-management-api-lat
             package: ./back-app
+             
+        - run: echo ${{ steps.deploy.outputs.appServiceName }}
