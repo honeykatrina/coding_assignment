@@ -75,13 +75,13 @@ jobs:
           uses: actions/download-artifact@v2
           with:
             name: front-app
-            path: /front-app
+            path: ./front-app
 
         - name: Download artifact from build-backend job
           uses: actions/download-artifact@v2
           with:
             name: back-app
-            path: /back-app
+            path: ./back-app
         
         - name: login
           uses: azure/login@v1
