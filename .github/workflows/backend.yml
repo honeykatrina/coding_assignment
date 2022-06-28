@@ -106,3 +106,10 @@ jobs:
             package: ./back-app
              
         - run: echo ${{ steps.deploy.outputs.appServiceName }}
+
+        - name: Azure Blob Storage Upload
+          uses: bacongobbler/azure-blob-storage-upload@v1.1.1
+          with:
+            connection_string: ${{ secrets.CONNECTION_STRING }}
+            container_name: www
+            source_dir: ./front-app
