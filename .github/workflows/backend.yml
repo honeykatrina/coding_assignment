@@ -37,11 +37,10 @@ jobs:
         working-directory: backend
 
       - name: Upload API Build Artifact
-        uses: actions/upload-artifact@v2
-        working-directory: backend
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: back-app
-          path: /bin/Debug/net6.0/publish/
+          path: backend/bin/Debug/net6.0/publish/
 
   build-frontend:
         runs-on: ubuntu-latest
@@ -56,16 +55,15 @@ jobs:
 
         - name: npm install, build
           working-directory: frontend/user-account-management
-            run: |
+          run: |
             npm install
             npm run build --if-present
 
         - name: Upload artifact
-          uses: actions/upload-artifact@v2
-          working-directory: frontend/user-account-management
+          uses: actions/upload-artifact@v3.1.0
           with:
             name: front-app
-            path: /dist/user-account-management/
+            path: frontend/user-account-management/dist/user-account-management/
 
   deploy:
     runs-on: ubuntu-latest
@@ -77,11 +75,13 @@ jobs:
           uses: actions/download-artifact@v2
           with:
             name: front-app
+            path: /front-app
 
         - name: Download artifact from build-backend job
           uses: actions/download-artifact@v2
           with:
             name: back-app
+            path: /back-app
         
         - name: login
           uses: azure/login@v1
@@ -90,6 +90,7 @@ jobs:
             
         - name: deploy
           uses: azure/arm-deploy@v1
+          id: deploy
           with:
             scope: subscription
             region: westeurope
@@ -97,4 +98,9 @@ jobs:
             template: deployment/main.bicep
             parameters: resourceGroupName=${{ secrets.AZURE_RG }}
             failOnStdErr: false
-    
+            
+        - name: deploy Azure WebApp
+          uses: Azure/webapps-deploy@v2
+          with:
+            app-name: ${{ steps.deploy.outputs.appServiceName }}
+            package: ./back-app
