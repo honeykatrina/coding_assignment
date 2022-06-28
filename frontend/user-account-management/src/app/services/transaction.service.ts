@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Transaction } from '../interfaces/transaction';
 
 @Injectable({
@@ -7,7 +8,6 @@ import { Transaction } from '../interfaces/transaction';
 })
 export class TransactionService {
 
-  apiUrl = 'https://localhost:7018/user';
   headers = { 'Content-Type': 'application/json; charset=utf-8' };
   transactions: Transaction[] = []
 
@@ -16,7 +16,7 @@ export class TransactionService {
   }
 
   getTransactions() {
-    this.http.get<any>(this.apiUrl + "/transactions").subscribe({
+    this.http.get<any>(environment.apiUrl + "/transactions").subscribe({
       next: (response) => {
         this.transactions = response.model;
       },

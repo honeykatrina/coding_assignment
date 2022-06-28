@@ -1,4 +1,4 @@
-name: Build pipeline
+name: CI/CD pipeline
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,3 +31,82 @@ jobs:
       - name: Test
         run: dotnet test -c Release --no-restore --no-build
         working-directory: backend
+
+      - name: Publish
+        run: dotnet publish
+        working-directory: backend
+
+      - name: Upload API Build Artifact
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: back-app
+          path: backend/bin/Debug/net6.0/publish/
+
+  build-frontend:
+        runs-on: ubuntu-latest
+
+        steps:
+        - uses: actions/checkout@v2
+
+        - name: Set up Node.js version
+          uses: actions/setup-node@v1
+          with:
+            node-version: '14.x'
+
+        - name: npm install, build
+          working-directory: frontend/user-account-management
+          run: |
+            npm install
+            npm run build --if-present
+
+        - name: Upload artifact
+          uses: actions/upload-artifact@v3.1.0
+          with:
+            name: front-app
+            path: frontend/user-account-management/dist/user-account-management/
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ build-backend, build-frontend ]
+    steps:
+        - uses: actions/checkout@v3
+
+        - name: Download artifact from build-frontend job
+          uses: actions/download-artifact@v2
+          with:
+            name: front-app
+            path: ./front-app
+
+        - name: Download artifact from build-backend job
+          uses: actions/download-artifact@v2
+          with:
+            name: back-app
+            path: ./back-app
+        
+        - name: login
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+            
+        - name: deploy
+          uses: azure/arm-deploy@v1
+          id: deploy
+          with:
+            scope: subscription
+            region: westeurope
+            subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+            template: deployment/main.bicep
+            parameters: resourceGroupName=${{ secrets.AZURE_RG }}
+            failOnStdErr: false
+        
+        - name: deploy Azure WebApp
+          uses: Azure/webapps-deploy@v2
+          with:
+            app-name: ${{ steps.deploy.outputs.appServiceName }}
+            package: ./back-appъ
+        
+        - name: Upload to blob storage
+          uses: azure/CLI@v1
+          with:
+            inlineScript: |
+                az storage blob upload-batch --account-name ${{ steps.deploy.outputs.storageAccountName }}  --auth-mode key -d '$web' -s ./front-app
