@@ -1,4 +1,4 @@
-name: Build pipeline
+name: CI/CD pipeline
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -32,10 +32,56 @@ jobs:
         run: dotnet test -c Release --no-restore --no-build
         working-directory: backend
 
+      - name: Publish
+        run: dotnet publish
+        working-directory: backend
+
+      - name: Upload API Build Artifact
+        uses: actions/upload-artifact@v2
+        working-directory: backend
+        with:
+          name: back-app
+          path: /bin/Debug/net6.0/publish/
+
+  build-frontend:
+        runs-on: ubuntu-latest
+
+        steps:
+        - uses: actions/checkout@v2
+
+        - name: Set up Node.js version
+          uses: actions/setup-node@v1
+          with:
+            node-version: '14.x'
+
+        - name: npm install, build
+          working-directory: frontend/user-account-management
+            run: |
+            npm install
+            npm run build --if-present
+
+        - name: Upload artifact
+          uses: actions/upload-artifact@v2
+          working-directory: frontend/user-account-management
+          with:
+            name: front-app
+            path: /dist/user-account-management/
+
   deploy:
     runs-on: ubuntu-latest
+    needs: [ build-backend, build-frontend ]
     steps:
         - uses: actions/checkout@v3
+
+        - name: Download artifact from build-frontend job
+          uses: actions/download-artifact@v2
+          with:
+            name: front-app
+
+        - name: Download artifact from build-backend job
+          uses: actions/download-artifact@v2
+          with:
+            name: back-app
         
         - name: login
           uses: azure/login@v1
