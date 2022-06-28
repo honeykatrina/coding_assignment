@@ -35,6 +35,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+        - uses: actions/checkout@v3
+        
         - name: login
           uses: azure/login@v1
           with:
@@ -45,7 +47,7 @@ jobs:
           with:
             subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
             resourceGroupName: ${{ secrets.AZURE_RG }}
-            template: '$(System.DefaultWorkingDirectory)/**/main.bicep'
+            template: deployment/main.bicep
             parameters: resourceGroupName=${{ secrets.AZURE_RG }}
             failOnStdErr: false
     
