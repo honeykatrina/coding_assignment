@@ -16,10 +16,9 @@ public class TransactionRepository : ITransactionRepository
         file.WriteLine(JsonSerializer.Serialize(transactions));
     }
 
-    public List<Transaction> GetByAccountId(Guid accountId)
+    public List<Transaction> GetAll()
     {
         var jsonString = File.ReadAllText(Path);
-        var transactions = JsonSerializer.Deserialize<List<Transaction>>(jsonString);
-        return transactions.Where(t => t.AccountId == accountId).ToList();
+        return JsonSerializer.Deserialize<List<Transaction>>(jsonString);
     }
 }

@@ -5,5 +5,5 @@ namespace UserAccountManagement.TransactionModule.Services;
 
 public interface ITransactionService
 {
-    BaseResponse<List<TransactionResponseModel>> GetTransactionsByAccountId(Guid accountId);
+    BaseResponse<List<TransactionResponseModel>> GetTransactions();
 }

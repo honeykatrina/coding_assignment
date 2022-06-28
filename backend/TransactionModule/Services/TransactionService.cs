@@ -19,9 +19,9 @@ public class TransactionService : ITransactionService
         _mapper = mapper;
     }
 
-    public BaseResponse<List<TransactionResponseModel>> GetTransactionsByAccountId(Guid accountId)
+    public BaseResponse<List<TransactionResponseModel>> GetTransactions()
     {
-        var transactions = _transactionRepository.GetByAccountId(accountId);
+        var transactions = _transactionRepository.GetAll();
         return new BaseResponseBuilder<List<TransactionResponseModel>>()
             .BuildSuccessResponse(_mapper.Map<List<TransactionResponseModel>>(transactions));
     }
