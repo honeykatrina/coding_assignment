@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.DependencyInjection;
 using UserAccountManagement.Shared.ServiceBusServices;
+using UserAccountManagement.Shared.Models;
 using UserAccountManagement.TransactionModule.Models.Entities;
 using UserAccountManagement.TransactionModule.Repositories;
-using UserAccountManagement.UserModule.Models.Requests;
 
 namespace UserAccountManagement.TransactionModule.Services;
 

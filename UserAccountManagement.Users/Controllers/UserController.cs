@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using UserAccountManagement.Shared.Helpers;
-using UserAccountManagement.UserModule.Models.Requests;
+using UserAccountManagement.Shared.Models;
 using UserAccountManagement.UserModule.Services;
 
 namespace UserAccountManagement.UserModule.Controllers

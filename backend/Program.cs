@@ -5,7 +5,6 @@ using UserAccountManagement.TransactionModule.Mappings;
 using UserAccountManagement.TransactionModule.Repositories;
 using UserAccountManagement.TransactionModule.Services;
 using UserAccountManagement.UserModule.Mappings;
-using UserAccountManagement.UserModule.Models.Requests;
 using UserAccountManagement.UserModule.Repositories;
 using UserAccountManagement.UserModule.Services;
 

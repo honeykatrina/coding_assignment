@@ -15,4 +15,10 @@
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UserAccountManagement.Shared\UserAccountManagement.Shared.csproj" />
+    <ProjectReference Include="..\UserAccountManagement.Transactions\UserAccountManagement.Transactions.csproj" />
+    <ProjectReference Include="..\UserAccountManagement.Users\UserAccountManagement.Users.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,9 +1,8 @@
 ﻿using System.Net;
 using UserAccountManagement.Shared.ServiceBusServices;
-using UserAccountManagement.TransactionModule.Models.Entities;
+using UserAccountManagement.Shared.Models;
 using UserAccountManagement.TransactionModule.Repositories;
 using UserAccountManagement.UserModule.Models.Entities;
-using UserAccountManagement.UserModule.Models.Requests;
 using UserAccountManagement.UserModule.Models.Responses;
 using UserAccountManagement.UserModule.Repositories;
 using UserAccountManagement.UserModule.Services;
@@ -62,7 +61,7 @@ public class UserServiceTest
         var userRequest = GetCreateUserRequest();
         var user = GetUser();
         var userResponse = GetUserResponseModel();
-        var transaction = GetTransaction(user);
+        var transaction = GetCreateTransactionMessage(user);
 
         var mapperMock = new Mock<IMapper>();
         mapperMock
@@ -72,7 +71,7 @@ public class UserServiceTest
             .Setup(m => m.Map<UserResponseModel>(user))
             .Returns(userResponse);
         mapperMock
-            .Setup(m => m.Map<Transaction>(It.IsAny<(CreateUserRequest, Guid)>()))
+            .Setup(m => m.Map<CreateTransaction>(It.IsAny<(CreateUserRequest, Guid)>()))
             .Returns(transaction);
 
         var userRepositoryMock = new Mock<IUserRepository>();
@@ -86,26 +85,30 @@ public class UserServiceTest
             .Setup(m => m.GetById(It.IsAny<Guid>()))
             .Returns(user);
 
-        var messageSenderMock = new Mock<IMessageSenderTypeFactory>();
-        // should send message
+        var messageSenderFactoryMock = new Mock<IMessageSenderTypeFactory>();
+        var messageSenderMock = new Mock<IMessageSender>();
+        messageSenderFactoryMock
+            .Setup(m => m.Create(It.IsAny<MessageType>()))
+            .Returns(messageSenderMock.Object);
+        messageSenderMock
+            .Setup(m => m.SendMessageAsync(It.IsAny<string>()))
+            .Verifiable();
         var userService = new UserService(
             userRepositoryMock.Object,
             mapperMock.Object,
-            messageSenderMock.Object);
+            messageSenderFactoryMock.Object);
         var actualResponse = await userService.CreateUserAsync(userRequest);
 
         actualResponse.Success.Should().BeTrue();
         actualResponse.Error.Should().BeNull();
         actualResponse.Model.Should().BeEquivalentTo(userResponse);
 
-        static Transaction GetTransaction(User user)
+        static CreateTransaction GetCreateTransactionMessage(User user)
         {
-            return new Transaction()
+            return new CreateTransaction()
             {
                 AccountId = user.Account.Id,
-                Id = Guid.NewGuid(),
-                Amount = 100,
-                CreationDate = DateTime.Now,
+                Amount = 100
             };
         }
 

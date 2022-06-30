@@ -1,9 +1,9 @@
 ﻿using Azure.Messaging.ServiceBus;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 using UserAccountManagement.Shared.Models;
 using UserAccountManagement.Shared.ServiceBusServices;
-using UserAccountManagement.UserModule.Models.Requests;
 
 namespace UserAccountManagement.TransactionModule.Services;
 

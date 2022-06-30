@@ -1,4 +1,4 @@
-﻿namespace UserAccountManagement.UserModule.Models.Requests;
+﻿namespace UserAccountManagement.Shared.Models;
 
 public class CreateUserRequest
 {

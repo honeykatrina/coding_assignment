@@ -1,6 +1,4 @@
-﻿using UserAccountManagement.Shared.Models;
-
-namespace UserAccountManagement.UserModule.Models.Requests;
+﻿namespace UserAccountManagement.Shared.Models;
 
 public class CreateTransaction: CustomMessage
 {

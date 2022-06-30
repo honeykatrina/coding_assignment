@@ -5,7 +5,6 @@ using UserAccountManagement.Shared.Helpers;
 using UserAccountManagement.Shared.Models;
 using UserAccountManagement.Shared.ServiceBusServices;
 using UserAccountManagement.UserModule.Models.Entities;
-using UserAccountManagement.UserModule.Models.Requests;
 using UserAccountManagement.UserModule.Models.Responses;
 using UserAccountManagement.UserModule.Repositories;
 

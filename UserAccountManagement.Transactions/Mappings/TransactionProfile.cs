@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using UserAccountManagement.UserModule.Models.Requests;
+using UserAccountManagement.Shared.Models;
 using UserAccountManagement.TransactionModule.Models.Responses;
 using UserAccountManagement.TransactionModule.Models.Entities;
 
