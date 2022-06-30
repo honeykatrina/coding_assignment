@@ -1,5 +1,8 @@
-﻿using UserAccountManagement.TransactionModule.Repositories;
+﻿using System.Net;
+using UserAccountManagement.TransactionModule.Models.Entities;
+using UserAccountManagement.TransactionModule.Repositories;
 using UserAccountManagement.UserModule.Models.Entities;
+using UserAccountManagement.UserModule.Models.Requests;
 using UserAccountManagement.UserModule.Models.Responses;
 using UserAccountManagement.UserModule.Repositories;
 using UserAccountManagement.UserModule.Services;
@@ -18,36 +21,167 @@ public class UserServiceTest
         userRepositoryMock
             .Setup(m => m.GetAll())
             .Returns(users);
+        
         var transactionRepositoryMock = new Mock<ITransactionRepository>();
         var mapperMock = new Mock<IMapper>();
         mapperMock
             .Setup(m => m.Map<List<UserResponseModel>>(users))
             .Returns(usersResponse);
+        
         var userService = new UserService(
             userRepositoryMock.Object,
             transactionRepositoryMock.Object,
             mapperMock.Object);
-        var actualUsers = userService.GetUsers();
+        var actualResponse = userService.GetUsers();
 
-        actualUsers.Success.Should().BeTrue();
-        actualUsers.Error.Should().BeNull();
-        actualUsers.Model.Should().HaveCount(1);
-        actualUsers.Model.Should().BeEquivalentTo(usersResponse);
+        actualResponse.Success.Should().BeTrue();
+        actualResponse.Error.Should().BeNull();
+        actualResponse.Model.Should().HaveCount(1);
+        actualResponse.Model.Should().BeEquivalentTo(usersResponse);
+
+        static List<UserResponseModel> GetUsersResponse()
+        {
+            return new List<UserResponseModel>()
+            {
+                new UserResponseModel()
+                {
+                    Name="Kate",
+                    Surname="Morozova",
+                    AccountId= Guid.Parse("1b61a218-84f3-411a-8238-e9c3196fd387"),
+                    CustomerId=1,
+                    Balance=300
+                }
+            };
+        }
     }
 
-    private static List<UserResponseModel> GetUsersResponse()
+    [Fact]
+    public void CreateUserShouldReturnNewUserAndCreateTransactionWhenUserHasInitialCredit()
     {
-        return new List<UserResponseModel>()
+        var userRequest = GetCreateUserRequest();
+        var user = GetUser();
+        var userResponse = GetUserResponseModel();
+        var transaction = GetTransaction(user);
+
+        var mapperMock = new Mock<IMapper>();
+        mapperMock
+            .Setup(m => m.Map<User>(userRequest))
+            .Returns(user);
+        mapperMock
+            .Setup(m => m.Map<UserResponseModel>(user))
+            .Returns(userResponse);
+        mapperMock
+            .Setup(m => m.Map<Transaction>(It.IsAny<(CreateUserRequest, Guid)>()))
+            .Returns(transaction);
+
+        var userRepositoryMock = new Mock<IUserRepository>();
+        userRepositoryMock
+            .Setup(m => m.GetByCustomerId(It.IsAny<int>()))
+            .Returns<User?>(null);
+        userRepositoryMock
+            .Setup(m => m.Create(user))
+            .Verifiable();
+        userRepositoryMock
+            .Setup(m => m.GetById(It.IsAny<Guid>()))
+            .Returns(user);
+        
+        var transactionRepositoryMock = new Mock<ITransactionRepository>();
+        transactionRepositoryMock
+            .Setup(m => m.Create(transaction))
+            .Verifiable();
+
+        var userService = new UserService(
+            userRepositoryMock.Object,
+            transactionRepositoryMock.Object,
+            mapperMock.Object);
+        var actualResponse = userService.CreateUser(userRequest);
+
+        actualResponse.Success.Should().BeTrue();
+        actualResponse.Error.Should().BeNull();
+        actualResponse.Model.Should().BeEquivalentTo(userResponse);
+
+        static Transaction GetTransaction(User user)
         {
-            new UserResponseModel()
+            return new Transaction()
             {
-                Name="Kate",
-                Surname="Morozova",
-                AccountId= Guid.Parse("1b61a218-84f3-411a-8238-e9c3196fd387"),
-                CustomerId=1,
-                Balance=300
-            }
-        };
+                AccountId = user.Account.Id,
+                Id = Guid.NewGuid(),
+                Amount = 100,
+                CreationDate = DateTime.Now,
+            };
+        }
+
+        static User GetUser()
+        {
+            return new User()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test",
+                Surname = null,
+                Account = new Account
+                {
+                    Id = Guid.NewGuid(),
+                    CustomerId = 2,
+                    Balance = 100
+                }
+            };
+        }
+
+        static CreateUserRequest GetCreateUserRequest()
+        {
+            return new CreateUserRequest()
+            {
+                Name = "Test",
+                CustomerId = 2,
+                InitialCredit = 100
+            };
+        }
+
+        static UserResponseModel GetUserResponseModel()
+        {
+            return new UserResponseModel
+            {
+                Name = "Test",
+                Surname = null,
+                AccountId = Guid.NewGuid(),
+                CustomerId = 2,
+                Balance = 100
+            };
+        }
+    }
+
+    [Fact]
+    public void CreateUserShouldReturnErrorWhenUserExists()
+    {
+        var userRequest = GetCreateUserRequest();
+        var user = GetUsers().First(x => x.Account.CustomerId == userRequest.CustomerId);
+
+        var mapperMock = new Mock<IMapper>();
+        var transactionRepositoryMock = new Mock<ITransactionRepository>();
+        var userRepositoryMock = new Mock<IUserRepository>();
+        userRepositoryMock
+            .Setup(m => m.GetByCustomerId(It.IsAny<int>()))
+            .Returns(user);
+
+        var userService = new UserService(
+            userRepositoryMock.Object,
+            transactionRepositoryMock.Object,
+            mapperMock.Object);
+        var actualResponse = userService.CreateUser(userRequest);
+
+        actualResponse.Success.Should().BeFalse();
+        actualResponse.Error.ErrorCode.Should().Be(HttpStatusCode.BadRequest);
+        actualResponse.Error.Message.Should().Be("User account already exists.");
+
+        static CreateUserRequest GetCreateUserRequest()
+        {
+            return new CreateUserRequest()
+            {
+                Name = "Test",
+                CustomerId = 1,
+                InitialCredit = 100
+            };
+        }
     }
 
     private static List<User> GetUsers()
@@ -59,7 +193,8 @@ public class UserServiceTest
                 Id = Guid.NewGuid(),
                 Name="Kate",
                 Surname="Morozova",
-                Account= new Account {
+                Account= new Account 
+                {
                     Id= Guid.Parse("1b61a218-84f3-411a-8238-e9c3196fd387"),
                     CustomerId=1,
                     Balance=300

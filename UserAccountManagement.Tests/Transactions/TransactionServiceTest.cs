@@ -15,19 +15,21 @@ public class TransactionServiceTest
 
         var transactionRepositoryMock = new Mock<ITransactionRepository>();
         transactionRepositoryMock.Setup(m => m.GetAll()).Returns(transactions);
+        
         var mapperMock = new Mock<IMapper>();
         mapperMock
             .Setup(m => m.Map<List<TransactionResponseModel>>(transactions))
             .Returns(transactionsResponse);
+        
         var transactionService = new TransactionService(
             transactionRepositoryMock.Object,
             mapperMock.Object);
-        var actualTransactions = transactionService.GetTransactions();
+        var actualResponse = transactionService.GetTransactions();
 
-        actualTransactions.Success.Should().BeTrue();
-        actualTransactions.Error.Should().BeNull();
-        actualTransactions.Model.Should().HaveCount(2);
-        actualTransactions.Model.Should().BeEquivalentTo(transactionsResponse);
+        actualResponse.Success.Should().BeTrue();
+        actualResponse.Error.Should().BeNull();
+        actualResponse.Model.Should().HaveCount(2);
+        actualResponse.Model.Should().BeEquivalentTo(transactionsResponse);
     }
 
     private static List<TransactionResponseModel> GetTransactionsResponse()
