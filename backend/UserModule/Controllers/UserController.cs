@@ -24,9 +24,9 @@ namespace UserAccountManagement.UserModule.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateUserRequest request)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateUserRequest request)
         {
-            var result = _userService.CreateUser(request);
+            var result = await _userService.CreateUserAsync(request);
             return result.Success ? new OkObjectResult(result) : ErrorResponseHelper.CreateErrorResponse(result);
         }
     }

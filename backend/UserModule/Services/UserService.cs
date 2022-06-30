@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using System.Net;
+using System.Text.Json;
 using UserAccountManagement.Shared.Helpers;
 using UserAccountManagement.Shared.Models;
-using UserAccountManagement.TransactionModule.Models.Entities;
-using UserAccountManagement.TransactionModule.Repositories;
+using UserAccountManagement.Shared.ServiceBusServices;
 using UserAccountManagement.UserModule.Models.Entities;
 using UserAccountManagement.UserModule.Models.Requests;
 using UserAccountManagement.UserModule.Models.Responses;
@@ -14,17 +14,17 @@ namespace UserAccountManagement.UserModule.Services;
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
-    private readonly ITransactionRepository _transactionRepository;
     private readonly IMapper _mapper;
+    private readonly IMessageSenderTypeFactory _messageSenderTypeFactory;
 
     public UserService(
         IUserRepository userRepository,
-        ITransactionRepository transactionRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IMessageSenderTypeFactory messageSenderTypeFactory)
     {
         _userRepository = userRepository;
-        _transactionRepository = transactionRepository;
         _mapper = mapper;
+        _messageSenderTypeFactory = messageSenderTypeFactory;
     }
 
     public BaseResponse<List<UserResponseModel>> GetUsers()
@@ -34,7 +34,7 @@ public class UserService : IUserService
             .BuildSuccessResponse(_mapper.Map<List<UserResponseModel>>(users));
     }
 
-    public BaseResponse<UserResponseModel> CreateUser(CreateUserRequest request)
+    public async Task<BaseResponse<UserResponseModel>> CreateUserAsync(CreateUserRequest request)
     {
         var currentUser = _userRepository.GetByCustomerId(request.CustomerId);
         if (currentUser != null)
@@ -51,8 +51,11 @@ public class UserService : IUserService
         
         if (request.InitialCredit != 0)
         {
-            var transaction = _mapper.Map<Transaction>((request, newUser.Account.Id));
-            _transactionRepository.Create(transaction);
+            var transaction = JsonSerializer.Serialize(
+                _mapper.Map<CreateTransaction>((request, newUser.Account.Id)));
+            await _messageSenderTypeFactory
+                       .Create(MessageType.CreateTransaction)
+                       .SendMessageAsync(transaction);
         }
 
         return new BaseResponseBuilder<UserResponseModel>()

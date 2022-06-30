@@ -9,11 +9,13 @@ public class TransactionProfile : Profile
 {
     public TransactionProfile()
     {
-        CreateMap<(CreateUserRequest, Guid), Transaction>()
+        CreateMap<CreateTransaction, Transaction>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
-            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Item1.InitialCredit))
-            .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Item2))
             .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow));
+
+        CreateMap<(CreateUserRequest, Guid), CreateTransaction>()
+            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Item1.InitialCredit))
+            .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Item2));
 
         CreateMap<Transaction, TransactionResponseModel>();
     }

@@ -21,4 +21,11 @@ public class TransactionRepository : ITransactionRepository
         var jsonString = File.ReadAllText(Path);
         return JsonSerializer.Deserialize<List<Transaction>>(jsonString);
     }
+
+    public Transaction GetById(Guid id)
+    {
+        var jsonString = File.ReadAllText(Path);
+        var transactions = JsonSerializer.Deserialize<List<Transaction>>(jsonString);
+        return transactions.FirstOrDefault(x => x.Id == id);
+    }
 }

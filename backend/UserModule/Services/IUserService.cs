@@ -8,5 +8,5 @@ public interface IUserService
 {
     BaseResponse<List<UserResponseModel>> GetUsers();
 
-    BaseResponse<UserResponseModel> CreateUser(CreateUserRequest request);
+    Task<BaseResponse<UserResponseModel>> CreateUserAsync(CreateUserRequest request);
 }

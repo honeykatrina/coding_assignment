@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using UserAccountManagement.Shared.ServiceBusServices;
 using UserAccountManagement.TransactionModule.Models.Entities;
 using UserAccountManagement.TransactionModule.Repositories;
 using UserAccountManagement.UserModule.Models.Entities;
@@ -27,11 +28,11 @@ public class UserServiceTest
         mapperMock
             .Setup(m => m.Map<List<UserResponseModel>>(users))
             .Returns(usersResponse);
-        
+        var messageSenderMock = new Mock<IMessageSenderTypeFactory>();
         var userService = new UserService(
             userRepositoryMock.Object,
-            transactionRepositoryMock.Object,
-            mapperMock.Object);
+            mapperMock.Object,
+            messageSenderMock.Object);
         var actualResponse = userService.GetUsers();
 
         actualResponse.Success.Should().BeTrue();
@@ -56,7 +57,7 @@ public class UserServiceTest
     }
 
     [Fact]
-    public void CreateUserShouldReturnNewUserAndCreateTransactionWhenUserHasInitialCredit()
+    public async Task CreateUserShouldReturnNewUserAndCreateTransactionWhenUserHasInitialCredit()
     {
         var userRequest = GetCreateUserRequest();
         var user = GetUser();
@@ -84,17 +85,14 @@ public class UserServiceTest
         userRepositoryMock
             .Setup(m => m.GetById(It.IsAny<Guid>()))
             .Returns(user);
-        
-        var transactionRepositoryMock = new Mock<ITransactionRepository>();
-        transactionRepositoryMock
-            .Setup(m => m.Create(transaction))
-            .Verifiable();
 
+        var messageSenderMock = new Mock<IMessageSenderTypeFactory>();
+        // should send message
         var userService = new UserService(
             userRepositoryMock.Object,
-            transactionRepositoryMock.Object,
-            mapperMock.Object);
-        var actualResponse = userService.CreateUser(userRequest);
+            mapperMock.Object,
+            messageSenderMock.Object);
+        var actualResponse = await userService.CreateUserAsync(userRequest);
 
         actualResponse.Success.Should().BeTrue();
         actualResponse.Error.Should().BeNull();
@@ -151,7 +149,7 @@ public class UserServiceTest
     }
 
     [Fact]
-    public void CreateUserShouldReturnErrorWhenUserExists()
+    public async Task CreateUserShouldReturnErrorWhenUserExists()
     {
         var userRequest = GetCreateUserRequest();
         var user = GetUsers().First(x => x.Account.CustomerId == userRequest.CustomerId);
@@ -163,11 +161,13 @@ public class UserServiceTest
             .Setup(m => m.GetByCustomerId(It.IsAny<int>()))
             .Returns(user);
 
+        var messageSenderMock = new Mock<IMessageSenderTypeFactory>();
+
         var userService = new UserService(
             userRepositoryMock.Object,
-            transactionRepositoryMock.Object,
-            mapperMock.Object);
-        var actualResponse = userService.CreateUser(userRequest);
+            mapperMock.Object,
+            messageSenderMock.Object);
+        var actualResponse = await userService.CreateUserAsync(userRequest);
 
         actualResponse.Success.Should().BeFalse();
         actualResponse.Error.ErrorCode.Should().Be(HttpStatusCode.BadRequest);
