@@ -18,7 +18,6 @@ resource serviceBusQueue 'Microsoft.ServiceBus/namespaces/queues@2022-01-01-prev
   properties: {
     deadLetteringOnMessageExpiration: true
     maxDeliveryCount: 2
-    requiresDuplicateDetection: true
   }
 }
 
