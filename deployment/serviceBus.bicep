@@ -25,7 +25,11 @@ resource serviceBusQueueAuthorizationRule 'Microsoft.ServiceBus/namespaces/queue
   name: '${queueName}Management'
   parent: serviceBusQueue
   properties: {
-    rights: [ 'Manage' ]
+    rights: [
+      'Listen'
+      'Manage'
+      'Send'
+    ]
   }
 }
 
