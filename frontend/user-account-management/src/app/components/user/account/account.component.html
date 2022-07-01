@@ -1,0 +1,22 @@
+<main>
+    <h1>User Accounts</h1>
+    <div class="content">
+        <nav>
+            <button routerLink="add" [state]={id:this.customerId}>Add</button>
+        </nav>
+        <table>
+            <thead>
+                <tr>
+                    <th>Account balance</th>
+                    <th>Transactions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let account of this.userService.accounts">
+                    <td>{{ account.balance }}</td>
+                    <td>{{ getTransactions(account.id) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
