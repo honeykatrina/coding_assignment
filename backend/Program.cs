@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Azure;
+using UserAccountManagement.Shared.Models;
+using UserAccountManagement.Shared.ServiceBusServices;
 using UserAccountManagement.TransactionModule.Mappings;
 using UserAccountManagement.TransactionModule.Repositories;
 using UserAccountManagement.TransactionModule.Services;
@@ -7,14 +10,26 @@ using UserAccountManagement.UserModule.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
+builder.Services.AddSingleton<IProcessDataService<CreateTransaction>, ProcessCreateTransactionMessageService>();
+builder.Services.AddSingleton<IMessageSender, CreateTransactionMessageSenderService>();
+builder.Services.AddSingleton<IServiceBusSenderService, ServiceBusSenderService>();
+builder.Services.AddSingleton<IMessageSenderTypeFactory, MessageSenderTypeFactory>();
+builder.Services.AddHostedService<TransactionMessageProcessorHostedService>();
+
+builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueConfiguration"));
+
 builder.Services.AddAutoMapper(new[] { typeof(UserProfile), typeof(TransactionProfile) });
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder
+        .AddServiceBusClient(builder.Configuration.GetConnectionString("ServiceBus"));
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

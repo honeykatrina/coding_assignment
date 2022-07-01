@@ -7,9 +7,36 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UserAccountManagement.Shared\**" />
+    <Compile Remove="UserAccountManagement.Tests\**" />
+    <Compile Remove="UserAccountManagement.Transactions\**" />
+    <Compile Remove="UserAccountManagement.Users\**" />
+    <Content Remove="UserAccountManagement.Shared\**" />
+    <Content Remove="UserAccountManagement.Tests\**" />
+    <Content Remove="UserAccountManagement.Transactions\**" />
+    <Content Remove="UserAccountManagement.Users\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Shared\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Tests\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Transactions\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Users\**" />
+    <None Remove="UserAccountManagement.Shared\**" />
+    <None Remove="UserAccountManagement.Tests\**" />
+    <None Remove="UserAccountManagement.Transactions\**" />
+    <None Remove="UserAccountManagement.Users\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.8.1" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="UserAccountManagement.Transactions\UserAccountManagement.Transactions.csproj" />
+    <ProjectReference Include="UserAccountManagement.Users\UserAccountManagement.Users.csproj" />
   </ItemGroup>
 
 </Project>
