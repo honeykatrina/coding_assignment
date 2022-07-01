@@ -17,7 +17,6 @@ builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddSingleton<IProcessDataService<CreateTransaction>, ProcessCreateTransactionMessageService>();
 builder.Services.AddSingleton<IMessageSender, TransactionMessageSenderService>();
 builder.Services.AddSingleton<IServiceBusSenderService, ServiceBusSenderService>();
-builder.Services.AddSingleton<IMessageSenderTypeFactory, MessageSenderTypeFactory>();
 builder.Services.AddHostedService<TransactionMessageProcessorHostedService>();
 
 builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueConfiguration"));

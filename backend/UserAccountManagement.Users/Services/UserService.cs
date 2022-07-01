@@ -14,16 +14,16 @@ public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    private readonly IMessageSenderTypeFactory _messageSenderTypeFactory;
+    private readonly IMessageSender _messageSender;
 
     public UserService(
         IUserRepository userRepository,
         IMapper mapper,
-        IMessageSenderTypeFactory messageSenderTypeFactory)
+        IMessageSender messageSender)
     {
         _userRepository = userRepository;
         _mapper = mapper;
-        _messageSenderTypeFactory = messageSenderTypeFactory;
+        _messageSender = messageSender;
     }
 
     public BaseResponse<List<UserResponseModel>> GetUsers()
@@ -52,8 +52,7 @@ public class UserService : IUserService
         {
             var transaction = JsonSerializer.Serialize(
                 _mapper.Map<CreateTransaction>((request, newUser.Account.Id)));
-            await _messageSenderTypeFactory
-                       .Create(MessageType.CreateTransaction)
+            await _messageSender
                        .SendMessageAsync(transaction);
         }
 

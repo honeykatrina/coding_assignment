@@ -27,7 +27,7 @@ public class UserServiceTest
         mapperMock
             .Setup(m => m.Map<List<UserResponseModel>>(users))
             .Returns(usersResponse);
-        var messageSenderMock = new Mock<IMessageSenderTypeFactory>();
+        var messageSenderMock = new Mock<IMessageSender>();
         var userService = new UserService(
             userRepositoryMock.Object,
             mapperMock.Object,
@@ -85,18 +85,14 @@ public class UserServiceTest
             .Setup(m => m.GetById(It.IsAny<Guid>()))
             .Returns(user);
 
-        var messageSenderFactoryMock = new Mock<IMessageSenderTypeFactory>();
         var messageSenderMock = new Mock<IMessageSender>();
-        messageSenderFactoryMock
-            .Setup(m => m.Create(It.IsAny<MessageType>()))
-            .Returns(messageSenderMock.Object);
         messageSenderMock
             .Setup(m => m.SendMessageAsync(It.IsAny<string>()))
             .Verifiable();
         var userService = new UserService(
             userRepositoryMock.Object,
             mapperMock.Object,
-            messageSenderFactoryMock.Object);
+            messageSenderMock.Object);
         var actualResponse = await userService.CreateUserAsync(userRequest);
 
         actualResponse.Success.Should().BeTrue();
@@ -164,7 +160,7 @@ public class UserServiceTest
             .Setup(m => m.GetByCustomerId(It.IsAny<int>()))
             .Returns(user);
 
-        var messageSenderMock = new Mock<IMessageSenderTypeFactory>();
+        var messageSenderMock = new Mock<IMessageSender>();
 
         var userService = new UserService(
             userRepositoryMock.Object,
