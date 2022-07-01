@@ -27,11 +27,11 @@ resource appServiceApp 'Microsoft.Web/sites@2021-03-01' = {
           value: 'Development'
         }
         {
-          name: 'QueueConfiguration.Name'
+          name: 'QueueConfiguration:Name'
           value: serviceBusQueueName
         }
         {
-          name: 'ConnectionStrings.ServiceBus'
+          name: 'ConnectionStrings:ServiceBus'
           value: serviceBusConnectionString
         }
       ]
