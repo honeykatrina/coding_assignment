@@ -15,7 +15,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddSingleton<IProcessDataService<CreateTransaction>, ProcessCreateTransactionMessageService>();
-builder.Services.AddSingleton<IMessageSender, CreateTransactionMessageSenderService>();
+builder.Services.AddSingleton<IMessageSender, TransactionMessageSenderService>();
 builder.Services.AddSingleton<IServiceBusSenderService, ServiceBusSenderService>();
 builder.Services.AddSingleton<IMessageSenderTypeFactory, MessageSenderTypeFactory>();
 builder.Services.AddHostedService<TransactionMessageProcessorHostedService>();

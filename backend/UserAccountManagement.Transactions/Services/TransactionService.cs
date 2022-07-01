@@ -22,6 +22,7 @@ public class TransactionService : ITransactionService
     public BaseResponse<List<TransactionResponseModel>> GetTransactions()
     {
         var transactions = _transactionRepository.GetAll();
+
         return new BaseResponseBuilder<List<TransactionResponseModel>>()
             .BuildSuccessResponse(_mapper.Map<List<TransactionResponseModel>>(transactions));
     }
