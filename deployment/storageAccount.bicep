@@ -77,3 +77,4 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
 }
 
 output storageAccountName string = storageAccountName
+output storageAccountEndpoint string = storageAccount.properties.primaryEndpoints.web
