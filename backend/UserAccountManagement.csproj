@@ -7,6 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UserAccountManagement.Shared\**" />
+    <Compile Remove="UserAccountManagement.Tests\**" />
+    <Compile Remove="UserAccountManagement.Transactions\**" />
+    <Compile Remove="UserAccountManagement.Users\**" />
+    <Content Remove="UserAccountManagement.Shared\**" />
+    <Content Remove="UserAccountManagement.Tests\**" />
+    <Content Remove="UserAccountManagement.Transactions\**" />
+    <Content Remove="UserAccountManagement.Users\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Shared\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Tests\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Transactions\**" />
+    <EmbeddedResource Remove="UserAccountManagement.Users\**" />
+    <None Remove="UserAccountManagement.Shared\**" />
+    <None Remove="UserAccountManagement.Tests\**" />
+    <None Remove="UserAccountManagement.Transactions\**" />
+    <None Remove="UserAccountManagement.Users\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.8.1" />
@@ -16,9 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UserAccountManagement.Shared\UserAccountManagement.Shared.csproj" />
-    <ProjectReference Include="..\UserAccountManagement.Transactions\UserAccountManagement.Transactions.csproj" />
-    <ProjectReference Include="..\UserAccountManagement.Users\UserAccountManagement.Users.csproj" />
+    <ProjectReference Include="UserAccountManagement.Transactions\UserAccountManagement.Transactions.csproj" />
+    <ProjectReference Include="UserAccountManagement.Users\UserAccountManagement.Users.csproj" />
   </ItemGroup>
 
 </Project>
