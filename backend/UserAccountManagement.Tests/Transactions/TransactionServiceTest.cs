@@ -24,6 +24,7 @@ public class TransactionServiceTest
         var transactionService = new TransactionService(
             transactionRepositoryMock.Object,
             mapperMock.Object);
+
         var actualResponse = transactionService.GetTransactions();
 
         actualResponse.Success.Should().BeTrue();

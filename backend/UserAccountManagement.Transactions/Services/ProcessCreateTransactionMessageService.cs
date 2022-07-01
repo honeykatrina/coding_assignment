@@ -20,7 +20,7 @@ public class ProcessCreateTransactionMessageService: IProcessDataService<CreateT
         _transactionRepository = serviceProvider.GetRequiredService<ITransactionRepository>();
     }
 
-    public bool ProcessAsync(CreateTransaction message)
+    public bool Process(CreateTransaction message)
     {
         var transaction = _mapper.Map<Transaction>(message);
         _transactionRepository.Create(transaction);

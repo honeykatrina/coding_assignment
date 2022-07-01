@@ -36,7 +36,7 @@ resource appServiceApp 'Microsoft.Web/sites@2021-03-01' = {
         }
       ]
       cors: {
-        allowedOrigins: [ staticSiteEndpoint ]
+        allowedOrigins: [ endsWith(staticSiteEndpoint, '/') ? take(staticSiteEndpoint, lastIndexOf(staticSiteEndpoint, '/')) : staticSiteEndpoint ]
       }
     }
   }

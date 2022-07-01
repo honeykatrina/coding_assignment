@@ -4,12 +4,12 @@ using UserAccountManagement.Shared.ServiceBusServices;
 
 namespace UserAccountManagement.UserModule.Services;
 
-public class CreateTransactionMessageSenderService : IMessageSender
+public class TransactionMessageSenderService : IMessageSender
 {
     private readonly IServiceBusSenderService _serviceBusSenderService;
     private readonly QueueSettings _appSettings;
 
-    public CreateTransactionMessageSenderService(
+    public TransactionMessageSenderService(
         IServiceBusSenderService serviceBusSenderService,
         IOptions<QueueSettings> options)
     {
