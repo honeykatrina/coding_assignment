@@ -5,7 +5,7 @@ Solution consists of an .Net API and Angular SPA.
 UserAccountManagement Api contains few projects:
 
 - UserAccountManagement.Users, UserAccountManagement.Transactions are services to manage corresponded domains
-- UserAccountManagement.Shared contains some shared models
+- UserAccountManagement.Shared contains some shared models and service bus services
 - UserAccountManagement.Tests contains some unit tests
 
 The project data is saved to json files to test solution easier. 
