@@ -2,7 +2,7 @@
 using UserAccountManagement.Shared.Models;
 using UserAccountManagement.Shared.ServiceBusServices;
 
-namespace UserAccountManagement.UserModule.Services;
+namespace UserAccountManagement.Users.Services;
 
 public class TransactionMessageSenderService : IMessageSender
 {

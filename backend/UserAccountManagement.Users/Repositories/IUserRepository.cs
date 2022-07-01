@@ -1,14 +1,12 @@
-﻿using UserAccountManagement.UserModule.Models.Entities;
+﻿using UserAccountManagement.Users.Models.Entities;
 
-namespace UserAccountManagement.UserModule.Repositories;
+namespace UserAccountManagement.Users.Repositories;
 
 public interface IUserRepository
 {
     List<User> GetAll();
 
-    void Create(User user);
+    void Update(User user);
 
     User GetByCustomerId(int customerId);
-
-    User GetById(Guid id);
 }

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using UserAccountManagement.TransactionModule.Models.Entities;
+using UserAccountManagement.Transactions.Models.Entities;
 
-namespace UserAccountManagement.TransactionModule.Repositories;
+namespace UserAccountManagement.Transactions.Repositories;
 
 public class TransactionRepository : ITransactionRepository
 {

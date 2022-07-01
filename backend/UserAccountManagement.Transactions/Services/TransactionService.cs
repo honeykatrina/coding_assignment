@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using UserAccountManagement.Shared.Helpers;
 using UserAccountManagement.Shared.Models;
-using UserAccountManagement.TransactionModule.Models.Responses;
-using UserAccountManagement.TransactionModule.Repositories;
+using UserAccountManagement.Transactions.Models.Responses;
+using UserAccountManagement.Transactions.Repositories;
 
-namespace UserAccountManagement.TransactionModule.Services;
+namespace UserAccountManagement.Transactions.Services;
 
 public class TransactionService : ITransactionService
 {

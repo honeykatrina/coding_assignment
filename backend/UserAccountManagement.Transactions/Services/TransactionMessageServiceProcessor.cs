@@ -5,7 +5,7 @@ using System.Text.Json;
 using UserAccountManagement.Shared.Models;
 using UserAccountManagement.Shared.ServiceBusServices;
 
-namespace UserAccountManagement.TransactionModule.Services;
+namespace UserAccountManagement.Transactions.Services;
 
 public class TransactionMessageProcessorHostedService : IHostedService
 {

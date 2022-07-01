@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using UserAccountManagement.Shared.Models;
-using UserAccountManagement.TransactionModule.Models.Responses;
-using UserAccountManagement.TransactionModule.Models.Entities;
+using UserAccountManagement.Transactions.Models.Responses;
+using UserAccountManagement.Transactions.Models.Entities;
 
-namespace UserAccountManagement.TransactionModule.Mappings;
+namespace UserAccountManagement.Transactions.Mappings;
 
 public class TransactionProfile : Profile
 {
@@ -13,7 +13,7 @@ public class TransactionProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
             .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow));
 
-        CreateMap<(CreateUserRequest, Guid), CreateTransaction>()
+        CreateMap<(CreateAccountRequest, Guid), CreateTransaction>()
             .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Item1.InitialCredit))
             .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Item2));
 
