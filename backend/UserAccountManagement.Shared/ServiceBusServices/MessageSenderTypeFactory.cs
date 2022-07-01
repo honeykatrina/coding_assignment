@@ -14,7 +14,7 @@ public class MessageSenderTypeFactory: IMessageSenderTypeFactory
 
         foreach (MessageType messageType in Enum.GetValues(typeof(MessageType)))
         {
-            var type = Type.GetType($"UserAccountManagement.UserModule.Services.{messageType}MessageSenderService");
+            var type = Type.GetType($"UserAccountManagement.UserModule.Services.{messageType}MessageSenderService,UserAccountManagement.Users");
             var factory = notificatorServices.FirstOrDefault(x => x.GetType() == type);
             if (factory == null)
             {
