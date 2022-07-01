@@ -1,7 +1,7 @@
-﻿using UserAccountManagement.TransactionModule.Models.Entities;
-using UserAccountManagement.TransactionModule.Models.Responses;
-using UserAccountManagement.TransactionModule.Repositories;
-using UserAccountManagement.TransactionModule.Services;
+﻿using UserAccountManagement.Transactions.Models.Entities;
+using UserAccountManagement.Transactions.Models.Responses;
+using UserAccountManagement.Transactions.Repositories;
+using UserAccountManagement.Transactions.Services;
 
 namespace UserAccountManagement.Tests.Transactions;
 
@@ -29,7 +29,7 @@ public class TransactionServiceTest
 
         actualResponse.Success.Should().BeTrue();
         actualResponse.Error.Should().BeNull();
-        actualResponse.Model.Should().HaveCount(2);
+        actualResponse.Model.Should().HaveCount(1);
         actualResponse.Model.Should().BeEquivalentTo(transactionsResponse);
     }
 
@@ -39,15 +39,9 @@ public class TransactionServiceTest
         {
             new TransactionResponseModel()
             {
-                AccountId = Guid.Parse("1b61a218-84f3-411a-8238-e9c3196fd387"),
+                AccountId = Guid.NewGuid(),
                 Amount = 200,
-                CreationDate = DateTime.Parse("2021-09-15T00:00:00+02:00")
-            },
-            new TransactionResponseModel()
-            {
-                AccountId = Guid.Parse("1b61a218-84f3-411a-8238-e9c3196fd387"),
-                Amount = 100,
-                CreationDate = DateTime.Parse("2021-07-26T00:00:00+02:00")
+                CreationDate = DateTime.Now
             }
         };
     }
@@ -59,16 +53,9 @@ public class TransactionServiceTest
             new Transaction()
             {
                 Id = Guid.NewGuid(),
-                AccountId = Guid.Parse("1b61a218-84f3-411a-8238-e9c3196fd387"),
+                AccountId = Guid.NewGuid(),
                 Amount = 200,
-                CreationDate = DateTime.Parse("2021-09-15T00:00:00+02:00")
-            },
-            new Transaction()
-            {
-                Id = Guid.NewGuid(),
-                AccountId = Guid.Parse("1b61a218-84f3-411a-8238-e9c3196fd387"),
-                Amount = 100,
-                CreationDate = DateTime.Parse("2021-07-26T00:00:00+02:00")
+                CreationDate = DateTime.Now
             }
         };
     }
