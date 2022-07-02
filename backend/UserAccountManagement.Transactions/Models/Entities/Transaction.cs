@@ -1,4 +1,4 @@
-﻿namespace UserAccountManagement.TransactionModule.Models.Entities;
+﻿namespace UserAccountManagement.Transactions.Models.Entities;
 
 public class Transaction
 {

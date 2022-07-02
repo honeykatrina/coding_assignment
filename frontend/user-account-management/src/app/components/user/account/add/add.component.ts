@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CreateUserRequest } from 'src/app/interfaces/createUserRequest';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -10,20 +9,25 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./add.component.css']
 })
 export class AddComponent implements OnInit {
-  f = new FormGroup({
-    customerId: new FormControl(1, [Validators.required]),
-    name: new FormControl(''),
-    surname: new FormControl(''),
+
+  addAccount = new FormGroup({
     initialCredit: new FormControl(0, [Validators.required])
   });
 
-  constructor(private router: Router, private userService: UserService) { }
+  customerId: number = 0;
+
+  constructor(private router: Router, public userService: UserService) {
+    const navigation = router.getCurrentNavigation();
+    const state = navigation?.extras.state as { id: number };
+    this.customerId = state.id;
+    this.userService.getAccounts(this.customerId);
+  }
 
   ngOnInit(): void {
   }
 
   submit() {
-    this.userService.add(this.f.value as CreateUserRequest);
+    this.userService.addAccount(this.customerId, this.addAccount.value.initialCredit!);
     this.router.navigateByUrl('');
   }
 }

@@ -11,7 +11,8 @@ public class ErrorResponseHelper
         return response.Error.ErrorCode switch
         {
             HttpStatusCode.BadRequest => new BadRequestObjectResult(response),
-            _ => new NotFoundObjectResult(response),
+            HttpStatusCode.NotFound => new NotFoundObjectResult(response),
+            _ => new BadRequestObjectResult(response),
         };
     }
 }

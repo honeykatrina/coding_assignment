@@ -1,12 +1,12 @@
 using Microsoft.Extensions.Azure;
 using UserAccountManagement.Shared.Models;
 using UserAccountManagement.Shared.ServiceBusServices;
-using UserAccountManagement.TransactionModule.Mappings;
-using UserAccountManagement.TransactionModule.Repositories;
-using UserAccountManagement.TransactionModule.Services;
-using UserAccountManagement.UserModule.Mappings;
-using UserAccountManagement.UserModule.Repositories;
-using UserAccountManagement.UserModule.Services;
+using UserAccountManagement.Transactions.Mappings;
+using UserAccountManagement.Transactions.Repositories;
+using UserAccountManagement.Transactions.Services;
+using UserAccountManagement.Users.Mappings;
+using UserAccountManagement.Users.Repositories;
+using UserAccountManagement.Users.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,6 @@ builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
 builder.Services.AddSingleton<IProcessDataService<CreateTransaction>, ProcessCreateTransactionMessageService>();
 builder.Services.AddSingleton<IMessageSender, TransactionMessageSenderService>();
 builder.Services.AddSingleton<IServiceBusSenderService, ServiceBusSenderService>();
-builder.Services.AddSingleton<IMessageSenderTypeFactory, MessageSenderTypeFactory>();
 builder.Services.AddHostedService<TransactionMessageProcessorHostedService>();
 
 builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("QueueConfiguration"));

@@ -4,60 +4,67 @@ using System.Text.Json;
 using UserAccountManagement.Shared.Helpers;
 using UserAccountManagement.Shared.Models;
 using UserAccountManagement.Shared.ServiceBusServices;
-using UserAccountManagement.UserModule.Models.Entities;
-using UserAccountManagement.UserModule.Models.Responses;
-using UserAccountManagement.UserModule.Repositories;
+using UserAccountManagement.Users.Models.Entities;
+using UserAccountManagement.Users.Models.Responses;
+using UserAccountManagement.Users.Repositories;
 
-namespace UserAccountManagement.UserModule.Services;
+namespace UserAccountManagement.Users.Services;
 
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    private readonly IMessageSenderTypeFactory _messageSenderTypeFactory;
+    private readonly IMessageSender _messageSender;
 
     public UserService(
         IUserRepository userRepository,
         IMapper mapper,
-        IMessageSenderTypeFactory messageSenderTypeFactory)
+        IMessageSender messageSender)
     {
         _userRepository = userRepository;
         _mapper = mapper;
-        _messageSenderTypeFactory = messageSenderTypeFactory;
+        _messageSender = messageSender;
     }
 
     public BaseResponse<List<UserResponseModel>> GetUsers()
     {
         var users = _userRepository.GetAll();
+
         return new BaseResponseBuilder<List<UserResponseModel>>()
             .BuildSuccessResponse(_mapper.Map<List<UserResponseModel>>(users));
     }
 
-    public async Task<BaseResponse<UserResponseModel>> CreateUserAsync(CreateUserRequest request)
+    public BaseResponse<List<AccountResponseModel>> GetUserAccountsByCustomerId(int customerId)
     {
-        var currentUser = _userRepository.GetByCustomerId(request.CustomerId);
-        if (currentUser != null)
-        {
-            return new BaseResponseBuilder<UserResponseModel>()
-                .SetError(new()
-                    { ErrorCode = HttpStatusCode.BadRequest, Message = "User account already exists." })
-                .Build();
-        }
+        var user = _userRepository.GetByCustomerId(customerId);
+        if (user == null)
+            return new BaseResponseBuilder<List<AccountResponseModel>>()
+                .BuildErrorResponse(HttpStatusCode.NotFound, "Customer doesn't exist.");
 
-        var newUser = _mapper.Map<User>(request);
-        _userRepository.Create(newUser);
-        var createdUser = _userRepository.GetById(newUser.Id);
+        return new BaseResponseBuilder<List<AccountResponseModel>>()
+            .BuildSuccessResponse(_mapper.Map<List<AccountResponseModel>>(user.Accounts));
+    }
+
+    public async Task<BaseResponse<AccountResponseModel>> CreateUserAccountAsync(CreateAccountRequest request)
+    {
+        var user = _userRepository.GetByCustomerId(request.CustomerId);
+        if (user == null)
+            return new BaseResponseBuilder<AccountResponseModel>()
+                .BuildErrorResponse(HttpStatusCode.NotFound, "Customer doesn't exist.");
+
+        var newAccount = _mapper.Map<Account>(request);
+        user.Accounts.Add(newAccount);
+        _userRepository.Update(user);
         
         if (request.InitialCredit != 0)
         {
             var transaction = JsonSerializer.Serialize(
-                _mapper.Map<CreateTransaction>((request, newUser.Account.Id)));
-            await _messageSenderTypeFactory
-                       .Create(MessageType.CreateTransaction)
-                       .SendMessageAsync(transaction);
+                _mapper.Map<CreateTransaction>((request.InitialCredit, newAccount.Id)));
+            await _messageSender
+                .SendMessageAsync(transaction);
         }
 
-        return new BaseResponseBuilder<UserResponseModel>()
-            .BuildSuccessResponse(_mapper.Map<UserResponseModel>(createdUser));
+        return new BaseResponseBuilder<AccountResponseModel>()
+            .BuildSuccessResponse(_mapper.Map<AccountResponseModel>(newAccount));
     }
 }

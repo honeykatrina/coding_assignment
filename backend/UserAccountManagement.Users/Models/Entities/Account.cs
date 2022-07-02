@@ -1,4 +1,4 @@
-﻿namespace UserAccountManagement.UserModule.Models.Entities;
+﻿namespace UserAccountManagement.Users.Models.Entities;
 
 public class Account
 {

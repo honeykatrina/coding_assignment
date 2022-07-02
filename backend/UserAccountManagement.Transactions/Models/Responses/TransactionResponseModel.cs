@@ -1,4 +1,4 @@
-﻿namespace UserAccountManagement.TransactionModule.Models.Responses;
+﻿namespace UserAccountManagement.Transactions.Models.Responses;
 
 public class TransactionResponseModel
 {

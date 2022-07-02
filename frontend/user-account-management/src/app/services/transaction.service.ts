@@ -16,7 +16,7 @@ export class TransactionService {
   }
 
   getTransactions() {
-    this.http.get<any>(environment.apiUrl + "/transactions").subscribe({
+    this.http.get<any>(environment.apiUrl + "transactions").subscribe({
       next: (response) => {
         this.transactions = response.model;
       },

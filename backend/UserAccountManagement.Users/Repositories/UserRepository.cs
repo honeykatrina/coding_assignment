@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
-using UserAccountManagement.UserModule.Models.Entities;
+using UserAccountManagement.Users.Models.Entities;
 
-namespace UserAccountManagement.UserModule.Repositories;
+namespace UserAccountManagement.Users.Repositories;
 
 public class UserRepository : IUserRepository
 {
@@ -10,14 +10,7 @@ public class UserRepository : IUserRepository
     {
         var jsonString = File.ReadAllText(Path);
         var users = JsonSerializer.Deserialize<List<User>>(jsonString);
-        return users.FirstOrDefault(x => x.Account.CustomerId == customerId);
-    }
-
-    public User GetById(Guid id)
-    {
-        var jsonString = File.ReadAllText(Path);
-        var users = JsonSerializer.Deserialize<List<User>>(jsonString);
-        return users.FirstOrDefault(x => x.Id == id);
+        return users.FirstOrDefault(x => x.CustomerId == customerId);
     }
 
     public List<User> GetAll()
@@ -27,10 +20,12 @@ public class UserRepository : IUserRepository
         return users;
     }
 
-    public void Create(User user)
+    public void Update(User user)
     {
         var jsonString = File.ReadAllText(Path);
         var users = JsonSerializer.Deserialize<List<User>>(jsonString);
+        var userToUpdate = users.First(x => x.Id == user.Id);
+        users.Remove(userToUpdate);
         users.Add(user);
         using var file = File.CreateText(Path);
         file.WriteLine(JsonSerializer.Serialize(users));

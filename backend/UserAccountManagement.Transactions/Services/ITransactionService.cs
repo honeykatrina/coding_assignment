@@ -1,7 +1,7 @@
 ﻿using UserAccountManagement.Shared.Models;
-using UserAccountManagement.TransactionModule.Models.Responses;
+using UserAccountManagement.Transactions.Models.Responses;
 
-namespace UserAccountManagement.TransactionModule.Services;
+namespace UserAccountManagement.Transactions.Services;
 
 public interface ITransactionService
 {

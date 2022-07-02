@@ -1,0 +1,10 @@
+<main>
+    <h1>Add account</h1>
+    <form [formGroup]="addAccount" (ngSubmit)="submit()">
+        <label>
+            <div>Initial credit</div>
+            <input type="number" formControlName="initialCredit" min="0" step="0.01" />
+        </label>
+        <button [disabled]="addAccount.invalid" class="primary">Add</button>
+    </form>
+</main>

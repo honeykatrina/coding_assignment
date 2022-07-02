@@ -1,26 +1,21 @@
 <main>
     <h1>Users</h1>
     <div class="content">
-        <nav>
-            <button routerLink="add">Add</button>
-        </nav>
         <table>
             <thead>
                 <tr>
-                    <th>Client number</th>
                     <th>Name</th>
                     <th>Surname</th>
                     <th>Balance</th>
-                    <th>Transactions</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let user of this.userService.users">
-                    <td>{{ user.customerId }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ user.surname }}</td>
                     <td>{{ user.balance}}</td>
-                    <td>{{ getTransactions(user.accountId) }}</td>
+                    <td><a routerLink="accounts" [state]={id:user.customerId}>See accounts</a></td>
                 </tr>
             </tbody>
         </table>

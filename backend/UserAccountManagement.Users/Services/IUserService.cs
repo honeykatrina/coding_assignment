@@ -1,11 +1,13 @@
 ﻿using UserAccountManagement.Shared.Models;
-using UserAccountManagement.UserModule.Models.Responses;
+using UserAccountManagement.Users.Models.Responses;
 
-namespace UserAccountManagement.UserModule.Services;
+namespace UserAccountManagement.Users.Services;
 
 public interface IUserService
 {
     BaseResponse<List<UserResponseModel>> GetUsers();
 
-    Task<BaseResponse<UserResponseModel>> CreateUserAsync(CreateUserRequest request);
+    BaseResponse<List<AccountResponseModel>> GetUserAccountsByCustomerId(int customerId);
+
+    Task<BaseResponse<AccountResponseModel>> CreateUserAccountAsync(CreateAccountRequest request);
 }

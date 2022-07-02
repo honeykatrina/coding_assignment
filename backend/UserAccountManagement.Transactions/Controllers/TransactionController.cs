@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UserAccountManagement.Shared.Helpers;
-using UserAccountManagement.TransactionModule.Services;
+using UserAccountManagement.Transactions.Services;
 
-namespace UserAccountManagement.TransactionModule.Controllers;
+namespace UserAccountManagement.Transactions.Controllers;
 
 [ApiController]
 public class TransactionController : Controller
@@ -14,10 +14,11 @@ public class TransactionController : Controller
         _transactionService = transactionService;
     }
 
-    [HttpGet("user/transactions")]
+    [HttpGet("transactions")]
     public IActionResult Get()
     {
         var result = _transactionService.GetTransactions();
+
         return result.Success ? new OkObjectResult(result) : ErrorResponseHelper.CreateErrorResponse(result);
     }
 }

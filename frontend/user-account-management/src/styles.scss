@@ -1,0 +1,81 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "../node_modules/normalize.css/normalize.css";
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+main {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 100%;
+    max-width: 50em;
+    margin: 0 auto;
+    padding: 0.5em;
+}
+
+button {
+    padding: 0.5em 1em;
+
+    &:not(:disabled) {
+        cursor: pointer;
+        border: 0.1em solid #eee;
+        background-color: #eee;
+
+        &:hover {
+            border: 0.1em solid #ddd;
+            background-color: #ddd;
+        }
+
+        &:active {
+            border: 0.1em solid #ccc;
+            background-color: #ccc;
+        }
+
+        &.primary {
+            border: 0.1em solid #333;
+            background-color: #333;
+            color: #fff;
+
+            &:hover {
+                border: 0.1em solid #555;
+                background-color: #555;
+            }
+
+            &:active {
+                border: 0.1em solid #777;
+                background-color: #777;
+            }
+        }
+    }
+}
+
+form {
+    display: flex;
+    flex-flow: column;
+    max-width: 25em;
+    width: 100%;
+    margin-top: 2em;
+
+    label {
+        margin-bottom: 1em;
+    }
+
+    input {
+        border: 0.1em solid #ddd;
+        padding: 0.5em 1em;
+        width: 100%;
+    }
+
+    button {
+        margin-top: 3em;
+    }
+}

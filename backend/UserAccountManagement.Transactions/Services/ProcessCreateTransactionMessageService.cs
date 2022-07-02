@@ -2,10 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using UserAccountManagement.Shared.ServiceBusServices;
 using UserAccountManagement.Shared.Models;
-using UserAccountManagement.TransactionModule.Models.Entities;
-using UserAccountManagement.TransactionModule.Repositories;
+using UserAccountManagement.Transactions.Models.Entities;
+using UserAccountManagement.Transactions.Repositories;
 
-namespace UserAccountManagement.TransactionModule.Services;
+namespace UserAccountManagement.Transactions.Services;
 
 public class ProcessCreateTransactionMessageService: IProcessDataService<CreateTransaction>
 {
