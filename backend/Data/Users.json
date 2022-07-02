@@ -4,7 +4,7 @@
         "Name": "Kate",
         "Surname": "Morozova",
         "CustomerId": 1,
-        "Account": [
+        "Accounts": [
             {
                 "Id": "1b61a218-84f3-411a-8238-e9c3196fd387",
                 "CustomerId": 1,
