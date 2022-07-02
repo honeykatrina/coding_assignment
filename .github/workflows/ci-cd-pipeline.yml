@@ -109,4 +109,4 @@ jobs:
           uses: azure/CLI@v1
           with:
             inlineScript: |
-                az storage blob upload-batch --account-name ${{ steps.deploy.outputs.storageAccountName }}  --auth-mode key -d '$web' -s ./front-app
+                az storage blob upload-batch --account-name ${{ steps.deploy.outputs.storageAccountName }} --overwrite --auth-mode key -d '$web' -s ./front-app
