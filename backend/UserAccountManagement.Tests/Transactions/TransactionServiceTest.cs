@@ -13,10 +13,12 @@ public class TransactionServiceTest
         var transactions = GetTransactions();
         var transactionsResponse = GetTransactionsResponse();
 
-        var transactionRepositoryMock = new Mock<ITransactionRepository>();
-        transactionRepositoryMock.Setup(m => m.GetAll()).Returns(transactions);
-        
         var mapperMock = new Mock<IMapper>();
+        var transactionRepositoryMock = new Mock<ITransactionRepository>();
+
+        transactionRepositoryMock
+            .Setup(m => m.GetAll())
+            .Returns(transactions);
         mapperMock
             .Setup(m => m.Map<List<TransactionResponseModel>>(transactions))
             .Returns(transactionsResponse);

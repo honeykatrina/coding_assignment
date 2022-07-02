@@ -29,6 +29,7 @@ public class UserService : IUserService
     public BaseResponse<List<UserResponseModel>> GetUsers()
     {
         var users = _userRepository.GetAll();
+
         return new BaseResponseBuilder<List<UserResponseModel>>()
             .BuildSuccessResponse(_mapper.Map<List<UserResponseModel>>(users));
     }
@@ -37,12 +38,8 @@ public class UserService : IUserService
     {
         var user = _userRepository.GetByCustomerId(customerId);
         if (user == null)
-        {
             return new BaseResponseBuilder<List<AccountResponseModel>>()
-                .SetError(new()
-                { ErrorCode = HttpStatusCode.NotFound, Message = "Customer doesn't exist." })
-                .Build();
-        }
+                .BuildErrorResponse(HttpStatusCode.NotFound, "Customer doesn't exist.");
 
         return new BaseResponseBuilder<List<AccountResponseModel>>()
             .BuildSuccessResponse(_mapper.Map<List<AccountResponseModel>>(user.Accounts));
@@ -52,12 +49,8 @@ public class UserService : IUserService
     {
         var user = _userRepository.GetByCustomerId(request.CustomerId);
         if (user == null)
-        {
             return new BaseResponseBuilder<AccountResponseModel>()
-                .SetError(new()
-                    { ErrorCode = HttpStatusCode.NotFound, Message = "Customer doesn't exist." })
-                .Build();
-        }
+                .BuildErrorResponse(HttpStatusCode.NotFound, "Customer doesn't exist.");
 
         var newAccount = _mapper.Map<Account>(request);
         user.Accounts.Add(newAccount);
@@ -66,9 +59,9 @@ public class UserService : IUserService
         if (request.InitialCredit != 0)
         {
             var transaction = JsonSerializer.Serialize(
-                _mapper.Map<CreateTransaction>((request, newAccount.Id)));
+                _mapper.Map<CreateTransaction>((request.InitialCredit, newAccount.Id)));
             await _messageSender
-                       .SendMessageAsync(transaction);
+                .SendMessageAsync(transaction);
         }
 
         return new BaseResponseBuilder<AccountResponseModel>()

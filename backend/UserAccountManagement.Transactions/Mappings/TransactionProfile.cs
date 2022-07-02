@@ -13,8 +13,8 @@ public class TransactionProfile : Profile
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
             .ForMember(dest => dest.CreationDate, opt => opt.MapFrom(src => DateTimeOffset.UtcNow));
 
-        CreateMap<(CreateAccountRequest, Guid), CreateTransaction>()
-            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Item1.InitialCredit))
+        CreateMap<(double, Guid), CreateTransaction>()
+            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Item1))
             .ForMember(dest => dest.AccountId, opt => opt.MapFrom(src => src.Item2));
 
         CreateMap<Transaction, TransactionResponseModel>();

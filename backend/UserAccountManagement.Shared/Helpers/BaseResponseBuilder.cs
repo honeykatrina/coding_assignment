@@ -1,4 +1,5 @@
-﻿using UserAccountManagement.Shared.Models;
+﻿using System.Net;
+using UserAccountManagement.Shared.Models;
 
 namespace UserAccountManagement.Shared.Helpers;
 
@@ -39,5 +40,13 @@ public class BaseResponseBuilder<T>
             .SetSuccess()
             .SetModel(model)
             .Build();
+    }
+
+    public BaseResponse<T> BuildErrorResponse(HttpStatusCode code, string message)
+    {
+        return new BaseResponseBuilder<T>()
+                .SetError(new()
+                { ErrorCode = code, Message = message })
+                .Build();
     }
 }
