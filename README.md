@@ -1,6 +1,6 @@
 # UserAccountManagement
-UserAccountManagement solution is sample dedicated to creation of user accounts.
-Solution consists of an .Net API and Angular SPA. 
+UserAccountManagement solution is a sample dedicated to creation of user accounts.
+Solution consists of .Net API and Angular SPA. 
 
 UserAccountManagement Api contains few projects:
 
@@ -22,6 +22,6 @@ Azure infrastructure is defined with Bicep in `/deployment` folder. Created Azur
 
 ## Test solution
 
-As the solution is deployed to Azure, you can test it in the cloud. Navigate to [API Swagger](https://user-management-api-lat.azurewebsites.net/swagger/index.html) to see available API endpoints. Or navigate to [frontend application web site](https://storlatocz3ehqllw.z6.web.core.windows.net/) to test through simple client interface.
+As the solution is deployed to Azure, you can test it in the cloud. Navigate to [API Swagger](https://user-management-api-lat.azurewebsites.net/swagger/index.html) to see available API endpoints. Or navigate to [frontend application web site](https://storlatocz3ehqllw.z6.web.core.windows.net/) to test through the client interface.
 
 > Note: To run solution locally you need to provide Service Bus connection string and a queue name in appsettings.Development.json. 
