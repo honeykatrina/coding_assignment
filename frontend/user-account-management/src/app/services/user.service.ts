@@ -34,6 +34,7 @@ export class UserService {
       (environment.apiUrl + `user/${customerId}/accounts`, JSON.stringify(initialCredit), { headers: this.headers }).subscribe({
         next: () => {
           this.getAccounts(customerId);
+          this.getUsers();
         },
         error: (e) => {
           console.error('error: ', e);
