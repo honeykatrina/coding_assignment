@@ -2,7 +2,7 @@ param location string = resourceGroup().location
 param serviceBusNamespaceName string = 'user-management-queue-${take(uniqueString(resourceGroup().id), 3)}'
 param skuName string = 'Basic'
 
-var queueName = 'transactionRequests'
+var queueName = 'transactionrequests'
 
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2022-01-01-preview' = {
   name: serviceBusNamespaceName
